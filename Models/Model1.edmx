@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="authenticationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Foodlist">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TBLUser">
+          <Key>
+            <PropertyRef Name="Id_Pk" />
+          </Key>
+          <Property Name="Id_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="User_Type_Fk" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TBLUserType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="UserType" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_TBLUser_User_Type_FK">
+          <End Role="TBLUserType" Type="Self.TBLUserType" Multiplicity="1" />
+          <End Role="TBLUser" Type="Self.TBLUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBLUserType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TBLUser">
+              <PropertyRef Name="User_Type_Fk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="authenticationModelStoreContainer">
+          <EntitySet Name="Foodlist" EntityType="Self.Foodlist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBLUser" EntityType="Self.TBLUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBLUserType" EntityType="Self.TBLUserType" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TBLUser_User_Type_FK" Association="Self.FK_TBLUser_User_Type_FK">
+            <End Role="TBLUserType" EntitySet="TBLUserType" />
+            <End Role="TBLUser" EntitySet="TBLUser" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="authenticationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Foodlist">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TBLUser">
+          <Key>
+            <PropertyRef Name="Id_Pk" />
+          </Key>
+          <Property Name="Id_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="User_Type_Fk" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TBLUserType" Relationship="Self.FK_TBLUser_User_Type_FK" FromRole="TBLUser" ToRole="TBLUserType" />
+        </EntityType>
+        <EntityType Name="TBLUserType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="UserType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TBLUsers" Relationship="Self.FK_TBLUser_User_Type_FK" FromRole="TBLUserType" ToRole="TBLUser" />
+        </EntityType>
+        <Association Name="FK_TBLUser_User_Type_FK">
+          <End Role="TBLUserType" Type="Self.TBLUserType" Multiplicity="1" />
+          <End Role="TBLUser" Type="Self.TBLUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBLUserType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TBLUser">
+              <PropertyRef Name="User_Type_Fk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="authenticationEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Foodlists" EntityType="Self.Foodlist" />
+          <EntitySet Name="TBLUsers" EntityType="Self.TBLUser" />
+          <EntitySet Name="TBLUserTypes" EntityType="Self.TBLUserType" />
+          <AssociationSet Name="FK_TBLUser_User_Type_FK" Association="Self.FK_TBLUser_User_Type_FK">
+            <End Role="TBLUserType" EntitySet="TBLUserTypes" />
+            <End Role="TBLUser" EntitySet="TBLUsers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="authenticationModelStoreContainer" CdmEntityContainer="authenticationEntities1">
+          <EntitySetMapping Name="Foodlists">
+            <EntityTypeMapping TypeName="authenticationModel.Foodlist">
+              <MappingFragment StoreEntitySet="Foodlist">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBLUsers">
+            <EntityTypeMapping TypeName="authenticationModel.TBLUser">
+              <MappingFragment StoreEntitySet="TBLUser">
+                <ScalarProperty Name="Id_Pk" ColumnName="Id_Pk" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="User_Type_Fk" ColumnName="User_Type_Fk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBLUserTypes">
+            <EntityTypeMapping TypeName="authenticationModel.TBLUserType">
+              <MappingFragment StoreEntitySet="TBLUserType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

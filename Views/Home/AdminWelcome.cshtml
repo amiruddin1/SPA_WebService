@@ -1,0 +1,125 @@
+﻿@using authetication.Models
+@model string
+@{
+    ViewBag.Title = "Login";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Welcome</title>
+</head>
+<body>
+    <div>
+        @using (Html.BeginForm())
+        {
+            <label>Food Name</label>
+            <input type="text" id="insname" />
+            <label> Food Price</label>
+            <input type="text" id="insprice" />
+            <input type="hidden" id="insid" />
+            <div class="btn btn-success" id="btnInsertFood">Add</div>
+            <div class="btn btn-info" style="display:none" id="btnUpdateFood">Update Record</div>
+        }
+    </div>
+
+            <div>
+               
+                <table class="table table-stripped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Price</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <script>
+                function newrecod() {
+                    var req = new XMLHttpRequest()
+                    req.open("post", 'http://localhost:52892/api/food')
+                    req.setRequestHeader("content-type", "application/json")
+                    var obj = {
+                        Name: document.getElementById("insname").value,
+                        Price: document.getElementById("insprice").value,
+
+                    };
+                    req.send(JSON.stringify(obj))
+                    req.onloadend = () => {
+                        getData()
+                    }
+                }
+                function upd(id) {
+
+                    var req = new XMLHttpRequest()
+                    req.open("GET", 'http://localhost:52892/api/food/' + id)
+                    req.send()
+                    req.onload = function (responseData) {
+                        data = JSON.parse(responseData.currentTarget.response);
+                        document.getElementById("insname").value = data.Name
+                        document.getElementById("insprice").value = data.Price
+                        document.getElementById("insid").value = data.Id
+                        document.querySelector("#btnInsertFood").style.display = "none";
+                        document.querySelector("#btnUpdateFood").style.display = "inline-block";
+                    }
+
+                }
+                function UpdateFoodOnServer() {
+                    var req = new XMLHttpRequest()
+                    req.open("put", 'http://localhost:52892/api/food')
+                    req.setRequestHeader("content-type", "application/json")
+                    var obj = {
+                        Id: document.getElementById("insid").value,
+                        Name: document.getElementById("insname").value,
+                        Price: document.getElementById("insprice").value,
+                    };
+                    req.send(JSON.stringify(obj))
+                    req.onloadend = () => {
+                        getData()
+                    }
+                }
+                    
+                    function del(id) {
+                        request = new XMLHttpRequest()
+                        request.open("Delete", 'http://localhost:52892/api/food/' + id)
+                        request.send()
+                        request.onloadend = () => {
+                            getData()
+                        }
+                    }
+
+                    function getData() {
+                        var request = new XMLHttpRequest();
+                        request.open("GET", "http://localhost:52892/Foodlist/Foodview")
+                        request.send();
+                        request.onload = () => {
+                            var data = request.response;
+
+                            var tableBody = document.querySelector("table");
+                            tableBody.children[1].innerHTML = data;
+                            request.onloadend = () => {
+                                document.getElementById("insname").value = '';
+                                document.getElementById("insprice").value = '';
+                                document.querySelector("#btnInsertFood").style.display = "inline-block";
+                                document.querySelector("#btnUpdateFood").style.display = "none";
+                            }
+                            //alert(data.Id)
+
+                        }
+
+
+                    }
+                    var addbtn = document.querySelector("div .btn.btn-success")
+                    addbtn.addEventListener("click", newrecod)
+                    var upbtn = document.querySelector("#btnUpdateFood");
+                    upbtn.addEventListener("click", UpdateFoodOnServer);
+                    getData()
+            </script>
+    </body>
+</html>

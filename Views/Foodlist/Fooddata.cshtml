@@ -1,0 +1,13 @@
+﻿@using authetication.Models
+@model List<Foodlist>
+@foreach (Foodlist f in Model)
+{
+    <tr>
+        <td>@f.Id</td>
+        <td>@f.Name</td>
+        <td>@f.Price</td>
+        
+        <td><div class="btn btn-success ms-5 btn2" onclick="upd(@f.Id)">Update</div></td>
+        <td><div class="btn btn-danger ms-5 btn3"onclick="del(@f.Id)">Delete</div></td>
+    </tr>
+}

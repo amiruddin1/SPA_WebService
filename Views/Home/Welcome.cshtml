@@ -1,0 +1,49 @@
+﻿@using authetication.Models
+@model string
+@{
+    ViewBag.Title = "Login";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Welcome</title>
+</head>
+<body>
+    <div>
+        <h1>welcome @Model</h1>
+        <table class="table table-stripped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script>
+         function getData(){
+        var request = new XMLHttpRequest();
+             request.open("GET", 'http://localhost:52892/api/food')
+        request.send()
+        request.onload = () => {
+            var data = JSON.parse(request.response)
+            s = '';
+            for (var i = 0; i < data.length; i++) {
+                s += "<tr><td>" + data[i].Id + "</td><td>" + data[i].Name + "</td><td>" + data[i].Price + "</td></tr>"
+            }
+
+            var table2 = document.querySelector("table")
+            table2.children[1].innerHTML = s    
+        }
+        }
+        getData()
+    </script>
+</body>
+</html>
